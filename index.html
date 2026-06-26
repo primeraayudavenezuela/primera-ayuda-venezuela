@@ -114,7 +114,8 @@
         .emergency-number { font-size: 1.5rem; font-weight: bold; color: var(--accent-color); background: rgba(225,29,72,0.1); padding: 3px 10px; border-radius: 6px; border: 1px solid rgba(225,29,72,0.2); }
         .tag-public { background: #dc2626; color: white; padding: 3px 8px; border-radius: 4px; font-size: 0.8rem; font-weight: bold; }
         .tag-private { background: #1d4ed8; color: white; padding: 3px 8px; border-radius: 4px; font-size: 0.8rem; font-weight: bold; }
-        .legend { font-size: 1rem; margin-bottom: 12px; display: flex; gap: 20px; justify-content: center; background: #f1f5f9; padding: 12px; border-radius: 8px; border: 2px solid var(--border-color); font-weight: bold; }
+        .tag-acopio { background: #d97706; color: white; padding: 3px 8px; border-radius: 4px; font-size: 0.8rem; font-weight: bold; }
+        .legend { font-size: 0.95rem; margin-bottom: 12px; display: flex; flex-wrap: wrap; gap: 15px; justify-content: center; background: #f1f5f9; padding: 12px; border-radius: 8px; border: 2px solid var(--border-color); font-weight: bold; }
 
         /* Detalles colapsables */
         details {
@@ -243,16 +244,30 @@
     </p>
 
     <!-- MAPA INTERACTIVO -->
-    <h2>🗺️ Mapa Interactivo de Centros de Salud Activos</h2>
+    <h2>🗺️ Mapa Interactivo de Centros de Salud y Acopio</h2>
     <div class="card">
-        <p style="font-size: 1rem; color: #475569; margin-bottom: 12px;">Arrastra y haz zoom para localizar los centros asistenciales habilitados. Toca cualquier marcador para ver detalles y coordinar tu ruta de traslado.</p>
+        <p style="font-size: 1rem; color: #475569; margin-bottom: 12px;">Arrastra y haz zoom para localizar los centros asistenciales habilitados y puntos de acopio. Toca cualquier marcador para ver detalles y coordinar tu ruta de traslado.</p>
         
         <div class="legend">
             <span>🏨 Hospital Público</span>
             <span>🩺 Clínica Privada</span>
+            <span>📦 Centro de Acopio</span>
         </div>
 
         <div id="map"></div>
+    </div>
+
+    <!-- REQUERIMIENTOS DE ACOPIO -->
+    <h2>🎒 Insumos Requeridos en los Centros de Acopio</h2>
+    <div class="card" style="border-left: 5px solid var(--warning-color); background: #fffbeb;">
+        <p style="font-size: 1.05rem; font-weight: bold; color: #92400e; margin-bottom: 10px;">Si vas a colaborar, prioriza la entrega de los siguientes elementos limpios y sellados:</p>
+        <ul style="padding-left: 20px; font-size: 1.05rem;">
+            <li><strong>Alimentos No Perecederos:</strong> Enlatados con abre fácil, arroz, pasta, granos, agua mineral embotellada y fórmulas infantiles.</li>
+            <li><strong>Material de Primeros Auxilios:</strong> Gasas, vendas elásticas, alcohol, solución salina, agua oxigenada, adhesivos y guantes descartables.</li>
+            <li><strong>Medicamentos Básicos:</strong> Analgésicos (acetaminofén, ibuprofeno), antialérgicos, protectores gástricos y tratamientos pediátricos.</li>
+            <li><strong>Higiene Personal:</strong> Jabón de baño, papel higiénico, toallas sanitarias, pañales (niños y adultos) y crema dental.</li>
+            <li><strong>Ropa y Cobijo:</strong> Sábanas, cobijas y ropa en buen estado (especialmente de abrigo), empacadas en bolsas plásticas limpias.</li>
+        </ul>
     </div>
 
     <!-- SECCIÓN: CENTROS DE SALUD ACTIVOS EN LA GRAN CARACAS -->
@@ -346,7 +361,6 @@
     <h2>🩹 ¿Cómo armar un Botiquín de Primeros Auxilios?</h2>
     <div class="card" style="border: 3px solid #10b981; background: #f0fdf4;">
         <div class="illustration-container">
-            <!-- SVG: Mochila de Botiquín Médico -->
             <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <rect x="3" y="6" width="18" height="14" rx="3" fill="#10b981"/>
                 <path d="M9 2H15V6H9V2Z" fill="#047857"/>
@@ -375,7 +389,6 @@
     <div class="card interactive-card card-hemorragia">
         <h3>🩸 1. Hemorragias Graves</h3>
         <div class="illustration-container">
-            <!-- SVG: Presión Directa sobre Herida -->
             <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M4 14C6 14 10 11 14 11C18 11 20 13 20 13V17C20 17 17 15 14 15C10 15 6 18 4 18V14Z" fill="#fecdd3" stroke="#f43f5e" stroke-width="2"/>
                 <circle cx="12" cy="13" r="3" fill="#e11d48"/>
@@ -391,7 +404,6 @@
     <div class="card interactive-card card-escombros">
         <h3>🏗️ 2. Protección bajo Escombros</h3>
         <div class="illustration-container">
-            <!-- SVG: Triángulo de Protección / Estructuras colapsadas -->
             <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M2 20L12 4L22 20H2Z" fill="#fde68a" stroke="#d97706" stroke-width="2"/>
                 <circle cx="12" cy="15" r="2" fill="#d97706"/>
@@ -437,8 +449,8 @@
 
 <!-- SCRIPT DE CONFIGURACIÓN DEL MAPA INTERACTIVO -->
 <script>
-    // Inicializar mapa centrado entre Caracas y La Guaira
-    var map = L.map('map').setView([10.535, -66.860], 11);
+    // Inicializar mapa centrado en Caracas con cobertura hacia el eje central
+    var map = L.map('map').setView([10.495, -66.860], 12);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '© OpenStreetMap contributors',
@@ -454,9 +466,9 @@
         });
     }
 
-    // Usando los nuevos emojis solicitados
     var publicIcon = createEmojiIcon('🏨');
     var privateIcon = createEmojiIcon('🩺');
+    var acopioIcon = createEmojiIcon('📦');
 
     var publicHospitals = [
         { name: "Hospital Domingo Luciani (El Llanito)", lat: 10.4795, lng: -66.8122 },
@@ -486,6 +498,34 @@
         { name: "Venemergencia", lat: 10.4880, lng: -66.8595 }
     ];
 
+    // Nuevos Centros de Acopio mapeados con coordenadas precisas en el eje caraqueño
+    var acopioCenters = [
+        { name: "Iglesia La Paz (Montalbán I)", lat: 10.4764, lng: -66.9542 },
+        { name: "Centro Comercial El Recreo", lat: 10.4922, lng: -66.8798 },
+        { name: "Gimnasio Energym (Av. Casanova)", lat: 10.4911, lng: -66.8805 },
+        { name: "Cáritas de Venezuela (Sede Montalbán)", lat: 10.4682, lng: -66.9678 },
+        { name: "Universidad Central de Venezuela (UCV)", lat: 10.4864, lng: -66.8845 },
+        { name: "Conferencia Episcopal Venezolana (CEV)", lat: 10.4680, lng: -66.9681 },
+        { name: "Iglesia San Bernardino de Siena", lat: 10.5134, lng: -66.8974 },
+        { name: "Sede de Desarrollo Social (Chacao)", lat: 10.4915, lng: -66.8552 },
+        { name: "Parroquia El Buen Pastor (Bello Campo)", lat: 10.4935, lng: -66.8504 },
+        { name: "Plaza Los Palos Grandes", lat: 10.4968, lng: -66.8423 },
+        { name: "Plaza Francia de Altamira", lat: 10.4961, lng: -66.8488 },
+        { name: "Sede Protección Civil (La Guairita)", lat: 10.4578, lng: -66.8290 },
+        { name: "Parque Alí Primera (Catia)", lat: 10.5242, lng: -66.9421 },
+        { name: "Protección Civil Capital (Av. Bolívar)", lat: 10.5015, lng: -66.9010 },
+        { name: "Bomberos de Caracas (Estación Central)", lat: 10.4975, lng: -66.9240 },
+        { name: "Estación Guardianes de Caracas (Caño Amarillo)", lat: 10.5108, lng: -66.9231 },
+        { name: "Escuela Nacional de Fiscales", lat: 10.4998, lng: -66.8745 },
+        { name: "CDI Cipriano Yerena (El Valle)", lat: 10.4612, lng: -66.9115 },
+        { name: "Centro Cultural Guayana Esequiba (San Bernardino)", lat: 10.5152, lng: -66.8941 },
+        { name: "Sede del Sistema de Orquestas (Quebrada Honda)", lat: 10.5012, lng: -66.8894 },
+        { name: "Colegio Mater Salvatoris (Las Mercedes)", lat: 10.4789, lng: -66.8612 },
+        { name: "Tribunal Supremo de Justicia (Sede Principal)", lat: 10.5151, lng: -66.9140 },
+        { name: "Programa de Paz y Convivencia (Plaza Alfredo Sadel)", lat: 10.4758, lng: -66.8647 },
+        { name: "Ministerio de Relaciones Interiores (Av. Urdaneta)", lat: 10.5085, lng: -66.9112 }
+    ];
+
     publicHospitals.forEach(function(hosp) {
         var mapURL = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(hosp.name)}`;
         L.marker([hosp.lat, hosp.lng], { icon: publicIcon }).addTo(map)
@@ -496,6 +536,12 @@
         var mapURL = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(clin.name)}`;
         L.marker([clin.lat, clin.lng], { icon: privateIcon }).addTo(map)
             .bindPopup(`<b>${clin.name}</b><br><span class='tag-private'>Clínica Convenio</span><br><br><a class='btn-secondary' href='${mapURL}' target='_blank'>Navegar con GPS</a>`);
+    });
+
+    acopioCenters.forEach(function(acop) {
+        var mapURL = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(acop.name)}`;
+        L.marker([acop.lat, acop.lng], { icon: acopioIcon }).addTo(map)
+            .bindPopup(`<b>${acop.name}</b><br><span class='tag-acopio'>Centro de Acopio</span><br><br><a class='btn-secondary' style='background-color: var(--warning-color);' href='${mapURL}' target='_blank'>Navegar con GPS</a>`);
     });
 </script>
 
